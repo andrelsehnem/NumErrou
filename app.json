@@ -1,0 +1,27 @@
+{
+    "expo": {
+        "name": "NúmErrou",
+        "slug": "numerrou",
+        "version": "2.0.0",
+        "orientation": "portrait",
+        "userInterfaceStyle": "light",
+        "backgroundColor": "#F5F0E6",
+        "primaryColor": "#173F35",
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "com.numerododia.app"
+        },
+        "android": {
+            "package": "com.numerododia.app",
+            "adaptiveIcon": {
+                "backgroundColor": "#F5F0E6"
+            }
+        },
+        "web": {
+            "name": "NúmErrou - Descubra o número do dia!",
+            "shortName": "NúmErrou",
+            "themeColor": "#F5F0E6",
+            "backgroundColor": "#F5F0E6"
+        }
+    }
+}

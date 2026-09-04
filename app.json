@@ -9,10 +9,10 @@
         "primaryColor": "#173F35",
         "ios": {
             "supportsTablet": true,
-            "bundleIdentifier": "com.numerododia.app"
+            "bundleIdentifier": "dev.andre100.numErrou"
         },
         "android": {
-            "package": "com.numerododia.app",
+            "package": "dev.andre100.numErrou",
             "adaptiveIcon": {
                 "backgroundColor": "#F5F0E6"
             }

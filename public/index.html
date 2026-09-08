@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="index, follow" />
+    <meta
+      name="description"
+      content="NúmErrou é o jogo diário brasileiro de lógica para descobrir o número secreto. Jogue grátis, desafie-se e compartilhe seu resultado."
+    />
+    <meta name="theme-color" content="#F5F0E6" />
+    <meta name="application-name" content="NúmErrou" />
+    <link rel="canonical" href="https://numerrou.vercel.app/" />
+    <link rel="icon" href="/numerrou-icon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/numerrou-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="NúmErrou" />
+    <meta property="og:title" content="NúmErrou — Descubra o número do dia" />
+    <meta
+      property="og:description"
+      content="Um jogo diário de lógica para descobrir o número secreto. Jogue grátis."
+    />
+    <meta property="og:url" content="https://numerrou.vercel.app/" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="NúmErrou — Descubra o número do dia" />
+    <meta
+      name="twitter:description"
+      content="Um jogo diário de lógica para descobrir o número secreto. Jogue grátis."
+    />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "NúmErrou",
+        "url": "https://numerrou.vercel.app/",
+        "inLanguage": "pt-BR",
+        "applicationCategory": "GameApplication",
+        "operatingSystem": "Web, Android, iOS",
+        "description": "Jogo diário de lógica em que você descobre um número secreto usando pistas para cada dígito.",
+        "isAccessibleForFree": true
+      }
+    </script>
+    <title>NúmErrou — Jogo diário para descobrir o número secreto</title>
+    <style>
+      html,
+      body,
+      #root {
+        width: 100%;
+        min-height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        height: calc(100% + env(safe-area-inset-top));
+        -webkit-text-size-adjust: 100%;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        display: flex;
+        overflow-y: auto;
+        overscroll-behavior-y: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      #root {
+        display: flex;
+        flex: 1;
+        flex-shrink: 0;
+      }
+
+      .no-script {
+        max-width: 42rem;
+        margin: 3rem auto;
+        padding: 0 1.5rem;
+        color: #173f35;
+        font: 1rem/1.6 system-ui, sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <main class="no-script">
+        <h1>NúmErrou: descubra o número do dia</h1>
+        <p>
+          NúmErrou é um jogo diário gratuito de lógica. Descubra o número secreto
+          em até seis tentativas usando as pistas de cada dígito.
+        </p>
+        <p>Ative o JavaScript para jogar.</p>
+      </main>
+    </noscript>
+  </body>
+</html>

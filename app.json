@@ -20,6 +20,8 @@
         "web": {
             "name": "NúmErrou - Descubra o número do dia!",
             "shortName": "NúmErrou",
+            "bundler": "metro",
+            "favicon": "./public/numerrou-icon.png",
             "themeColor": "#F5F0E6",
             "backgroundColor": "#F5F0E6"
         }

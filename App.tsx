@@ -2,6 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
+  Linking,
   Platform,
   Pressable,
   SafeAreaView,
@@ -15,6 +16,7 @@ import {
 import { GameBoard } from "./src/components/GameBoard";
 import { GameModal, modalStyles } from "./src/components/GameModal";
 import { NumberKeyboard } from "./src/components/NumberKeyboard";
+import { VercelAnalytics } from "./src/components/VercelAnalytics";
 import {
   DEFAULT_CUSTOM,
   MODES,
@@ -212,6 +214,7 @@ export default function App() {
     );
   return (
     <SafeAreaView style={s.safe}>
+      <VercelAnalytics />
       <StatusBar style="dark" />
       <View style={s.app}>
         <View style={s.header}>
@@ -280,6 +283,18 @@ export default function App() {
             </View>
           )}
         </View>
+      </View>
+      <View style={s.footer}>
+        <Text style={s.footerText}>
+          © 2026 NúmErrou - Número do Dia - Por{" "}
+          <Text
+            accessibilityRole="link"
+            onPress={() => void Linking.openURL("https://andre100.dev/")}
+            style={s.footerLink}
+          >
+            André Luis Sehnem
+          </Text>
+        </Text>
       </View>
       <GameModal
         visible={menuOpen}
@@ -463,7 +478,7 @@ function Legend({
 }
 const s = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.paper },
-  app: { flex: 1 },
+  app: { flex: 1, minHeight: 0 },
   loading: {
     flex: 1,
     backgroundColor: colors.paper,
@@ -523,6 +538,26 @@ const s = StyleSheet.create({
     fontVariant: ["tabular-nums"],
   },
   timerRunning: { color: colors.green },
+  footer: {
+    flexShrink: 0,
+    minHeight: 30,
+    paddingHorizontal: 12,
+    paddingBottom: 6,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  footerText: {
+    color: colors.muted,
+    fontSize: 11,
+    lineHeight: 16,
+    fontWeight: "600",
+    textAlign: "center",
+  },
+  footerLink: {
+    color: colors.accent,
+    fontWeight: "800",
+    textDecorationLine: "underline",
+  },
   gameArea: {
     flex: 1,
     width: "100%",

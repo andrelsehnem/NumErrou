@@ -6,15 +6,18 @@ import { colors } from '../theme';
 interface Props { config: GameConfig; game: GameState; completedRows: CompletedRow[]; }
 export function GameBoard({ config, game, completedRows }: Props) {
   const { width, height } = useWindowDimensions();
-  const gap = config.length >= 8 ? 3 : 6;
+  const columnGap = config.length >= 8 ? 3 : 6;
   const unlimited = config.attempts === null;
   const visibleRows = config.attempts ?? 6;
   const rowCount = unlimited ? Math.max(6, completedRows.length + (game.status === 'playing' ? 1 : 0)) : visibleRows;
+  const denseBoard = rowCount > 8;
+  const rowGap = denseBoard ? 3 : 6;
   const isWeb = Platform.OS === 'web';
   const availableWidth = Math.min(width - 32, isWeb ? 640 : 560);
-  const availableHeight = Math.max(160, height - (isWeb ? 360 : 390));
+  const reservedHeight = (isWeb ? 360 : 390) + (denseBoard ? 34 : 0);
+  const availableHeight = Math.max(160, height - reservedHeight);
   const maxTile = isWeb ? 74 : 58;
-  const tile = Math.max(22, Math.min((availableWidth - gap * (config.length - 1)) / config.length, (availableHeight - gap * (visibleRows - 1)) / visibleRows, maxTile));
+  const tile = Math.max(22, Math.min((availableWidth - columnGap * (config.length - 1)) / config.length, (availableHeight - rowGap * (visibleRows - 1)) / visibleRows, maxTile));
   const rows = Array.from({ length: rowCount }, (_, row) => {
     if (row < completedRows.length) return completedRows[row]!;
     if (row === completedRows.length && game.status === 'playing') return { guess: game.current.padEnd(config.length, ' '), result: Array<TileState>(config.length).fill('typing') };
@@ -22,8 +25,8 @@ export function GameBoard({ config, game, completedRows }: Props) {
   });
   const scrollRef = useRef<ScrollView>(null);
   useEffect(() => { if (unlimited) scrollRef.current?.scrollToEnd({ animated: completedRows.length > 0 }); }, [completedRows.length, unlimited]);
-  const board = <View style={[styles.board, { gap }]} accessibilityLabel="Tabuleiro do jogo">
-    {rows.map((row, rowIndex) => <View style={[styles.row, { gap }]} key={rowIndex}>
+  const board = <View style={[styles.board, { gap: rowGap }]} accessibilityLabel="Tabuleiro do jogo">
+    {rows.map((row, rowIndex) => <View style={[styles.row, { gap: columnGap }]} key={rowIndex}>
       {[...row.guess].map((digit, columnIndex) => {
         const state = row.result[columnIndex] ?? 'empty';
         return <View key={columnIndex} style={[styles.tile, { width: tile, height: tile }, stateStyles[state]]}>

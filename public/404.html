@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, follow" />
+    <meta name="theme-color" content="#071223" />
+    <link rel="icon" href="/numerrou-icon.png" type="image/png" />
+    <title>Página não encontrada — NúmErrou</title>
+    <style>
+      :root {
+        --night: #071223;
+        --night-light: #12223c;
+        --green: #20d966;
+        --yellow: #ffc12d;
+        --gray: #3c485d;
+        --paper: #f7f3e9;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        min-block-size: 100svh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        color: var(--paper);
+        background:
+          radial-gradient(circle at 20% 15%, #1d365a 0, transparent 30rem),
+          radial-gradient(circle at 85% 90%, #162d4d 0, transparent 28rem),
+          var(--night);
+        font-family: "Trebuchet MS", "Avenir Next", sans-serif;
+      }
+
+      main {
+        width: min(92vw, 48rem);
+        padding: clamp(2rem, 7vw, 5rem) 1.5rem;
+        text-align: center;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: .55rem;
+        margin-bottom: clamp(2.5rem, 8vw, 4.5rem);
+        color: var(--paper);
+        font-size: .92rem;
+        font-weight: 900;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+      }
+
+      .brand img {
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: .7rem;
+      }
+
+      .number {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: clamp(.8rem, 3vw, 1.8rem);
+        margin: 0 auto clamp(2rem, 5vw, 3rem);
+      }
+
+      .digit {
+        display: grid;
+        grid-template-columns: repeat(3, clamp(.7rem, 3vw, 1.35rem));
+        grid-template-rows: repeat(5, clamp(.7rem, 3vw, 1.35rem));
+        gap: clamp(.16rem, .8vw, .38rem);
+      }
+
+      .tile {
+        border-radius: clamp(.18rem, .8vw, .42rem);
+        background: rgba(60, 72, 93, .5);
+        box-shadow: inset 0 1px rgba(255, 255, 255, .12);
+      }
+
+      .on { background: var(--green); box-shadow: 0 .18rem .6rem rgba(32, 217, 102, .25); }
+      .hint { background: var(--yellow); box-shadow: 0 .18rem .6rem rgba(255, 193, 45, .2); }
+
+      h1 {
+        max-width: 15ch;
+        margin: 0 auto .85rem;
+        font-size: clamp(2rem, 7vw, 4.25rem);
+        line-height: .98;
+        letter-spacing: -.06em;
+      }
+
+      p {
+        max-width: 38ch;
+        margin: 0 auto 2rem;
+        color: #b8c6d8;
+        font-size: clamp(1rem, 2vw, 1.15rem);
+        line-height: 1.6;
+      }
+
+      a {
+        display: inline-block;
+        padding: 1rem 1.4rem;
+        border-radius: .9rem;
+        color: #072013;
+        background: var(--green);
+        box-shadow: 0 .5rem 1.5rem rgba(32, 217, 102, .22);
+        font-size: .86rem;
+        font-weight: 900;
+        letter-spacing: .08em;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: transform .18s ease, box-shadow .18s ease;
+      }
+
+      a:hover { transform: translateY(-.2rem); box-shadow: 0 .8rem 2rem rgba(32, 217, 102, .3); }
+      a:focus-visible { outline: .2rem solid var(--yellow); outline-offset: .25rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="brand"><img src="/numerrou-icon.png" alt="" /> NúmErrou</div>
+      <div class="number" aria-label="Erro 404">
+        <div class="digit" aria-hidden="true">
+          <i class="tile on"></i><i class="tile on"></i><i class="tile on"></i>
+          <i class="tile on"></i><i class="tile"></i><i class="tile on"></i>
+          <i class="tile on"></i><i class="tile"></i><i class="tile on"></i>
+          <i class="tile on"></i><i class="tile"></i><i class="tile on"></i>
+          <i class="tile"></i><i class="tile"></i><i class="tile on"></i>
+        </div>
+        <div class="digit" aria-hidden="true">
+          <i class="tile on"></i><i class="tile on"></i><i class="tile on"></i>
+          <i class="tile on"></i><i class="tile"></i><i class="tile on"></i>
+          <i class="tile on"></i><i class="tile"></i><i class="tile on"></i>
+          <i class="tile on"></i><i class="tile"></i><i class="tile on"></i>
+          <i class="tile on"></i><i class="tile on"></i><i class="tile on"></i>
+        </div>
+        <div class="digit" aria-hidden="true">
+          <i class="tile hint"></i><i class="tile hint"></i><i class="tile hint"></i>
+          <i class="tile hint"></i><i class="tile"></i><i class="tile hint"></i>
+          <i class="tile hint"></i><i class="tile"></i><i class="tile hint"></i>
+          <i class="tile hint"></i><i class="tile"></i><i class="tile hint"></i>
+          <i class="tile hint"></i><i class="tile hint"></i><i class="tile hint"></i>
+        </div>
+      </div>
+      <h1>Esse número não existe.</h1>
+      <p>A página que você tentou encontrar saiu do jogo ou nunca fez parte do desafio.</p>
+      <a href="/">Voltar ao desafio</a>
+    </main>
+  </body>
+</html>

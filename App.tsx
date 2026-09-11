@@ -1,4 +1,5 @@
 import { StatusBar } from "expo-status-bar";
+import * as Clipboard from "expo-clipboard";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
@@ -16,6 +17,7 @@ import {
 import { GameBoard } from "./src/components/GameBoard";
 import { GameModal, modalStyles } from "./src/components/GameModal";
 import { NumberKeyboard } from "./src/components/NumberKeyboard";
+import { ResultModal } from "./src/components/ResultModal";
 import { VercelAnalytics } from "./src/components/VercelAnalytics";
 import {
   DEFAULT_CUSTOM,
@@ -59,7 +61,10 @@ export default function App() {
   const [hydrated, setHydrated] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false),
     [customOpen, setCustomOpen] = useState(false),
-    [helpOpen, setHelpOpen] = useState(false);
+    [helpOpen, setHelpOpen] = useState(false),
+    [resultOpen, setResultOpen] = useState(false);
+  const resultModalArmedRef = useRef(false);
+  const previousStatusRef = useRef(game.status);
   const configRef = useRef(config);
   configRef.current = config;
   useEffect(() => {
@@ -90,6 +95,20 @@ export default function App() {
     if (hydrated && mode === "daily")
       saveDailyGame(game).catch(() => undefined);
   }, [game, hydrated, mode]);
+  useEffect(() => {
+    if (!hydrated) return;
+    if (!resultModalArmedRef.current) {
+      resultModalArmedRef.current = true;
+      previousStatusRef.current = game.status;
+      return;
+    }
+    if (
+      previousStatusRef.current === "playing" &&
+      game.status !== "playing"
+    )
+      setResultOpen(true);
+    previousStatusRef.current = game.status;
+  }, [game.status, hydrated]);
   const completedRows = useMemo(
     () =>
       game.guesses.map((guess) => ({
@@ -162,6 +181,7 @@ export default function App() {
     setMode(nextMode);
     setMenuOpen(false);
     setCustomOpen(false);
+    setResultOpen(false);
     resetTimer();
     if (nextMode === "daily") {
       setHydrated(false);
@@ -182,7 +202,7 @@ export default function App() {
       ),
     }));
   }
-  async function shareResult() {
+  function resultText() {
     const icons = {
       correct: "🟩",
       present: "🟨",
@@ -193,16 +213,47 @@ export default function App() {
     const squares = completedRows
       .map(({ result }) => result.map((state) => icons[state]).join(""))
       .join("\n");
-    const text = `NúmErrou — ${config.name}\n${formatScoreLine(game, config)} · ${formatTimer(elapsedSeconds)}\n\n${squares}`;
+    return `NúmErrou — ${config.name}\n${formatScoreLine(game, config)} · ${formatTimer(elapsedSeconds)}\n\n${squares}`;
+  }
+  async function copyResult() {
+    try {
+      await Clipboard.setStringAsync(resultText());
+      setGame((old) => ({ ...old, message: "Resultado copiado!" }));
+    } catch {}
+  }
+  async function shareResult() {
+    const text = resultText();
+    const title = "Meu resultado no NúmErrou";
     try {
       if (Platform.OS === "web" && typeof navigator !== "undefined") {
-        if (navigator.share) await navigator.share({ text });
+        const shareData = {
+          title,
+          text,
+          ...(typeof window !== "undefined" ? { url: window.location.href } : {}),
+        };
+        if (navigator.share) await navigator.share(shareData);
         else {
-          await navigator.clipboard.writeText(text);
-          setGame((old) => ({ ...old, message: "Resultado copiado!" }));
+          await Clipboard.setStringAsync(`${text}\n${window.location.href}`);
+          setGame((old) => ({
+            ...old,
+            message: "Resultado copiado! Cole no WhatsApp, Mensagens ou onde preferir.",
+          }));
         }
-      } else await Share.share({ message: text });
-    } catch {}
+      } else {
+        await Share.share({ title, message: text });
+      }
+    } catch (error) {
+      if ((error as { name?: string }).name !== "AbortError")
+        setGame((old) => ({
+          ...old,
+          message: "Não foi possível abrir o compartilhamento.",
+        }));
+    }
+  }
+  function chooseResultMode(nextMode: "easy" | "hard" | "custom") {
+    setResultOpen(false);
+    if (nextMode === "custom") setCustomOpen(true);
+    else beginMode(nextMode);
   }
   if (!hydrated)
     return (
@@ -257,30 +308,13 @@ export default function App() {
           >
             {game.message || " "}
           </Text>
-          {game.status === "playing" ? (
+          {game.status === "playing" && (
             <NumberKeyboard
               keyStates={keyStates}
               onDigit={onDigit}
               onRemove={onRemove}
               onSubmit={onSubmit}
             />
-          ) : (
-            <View style={s.endActions}>
-              {mode !== "daily" && (
-                <Primary
-                  text="NOVA PARTIDA"
-                  onPress={() => {
-                    resetTimer();
-                    setGame(
-                      blankGame(generateAnswer(config.length, config.repeat)),
-                    );
-                  }}
-                />
-              )}
-              <Pressable onPress={shareResult} style={s.secondary}>
-                <Text style={s.secondaryText}>COMPARTILHAR RESULTADO</Text>
-              </Pressable>
-            </View>
           )}
         </View>
       </View>
@@ -325,6 +359,18 @@ export default function App() {
           }}
         />
       </GameModal>
+      <ResultModal
+        visible={resultOpen}
+        game={game}
+        config={config}
+        completedRows={completedRows}
+        elapsed={formatTimer(elapsedSeconds)}
+        score={formatScoreLine(game, config)}
+        onClose={() => setResultOpen(false)}
+        onShare={() => void shareResult()}
+        onCopy={() => void copyResult()}
+        onChooseMode={chooseResultMode}
+      />
       <GameModal
         visible={customOpen}
         title="Partida personalizada"
